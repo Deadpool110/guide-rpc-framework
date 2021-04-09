@@ -27,7 +27,7 @@
 
 ## 介绍
 
- [guide-rpc-framework](https://github.com/Snailclimb/guide-rpc-framework) 是一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架。代码注释详细，结构清晰，并且集成了 Check Style 规范代码结构，非常适合阅读和学习。
+[guide-rpc-framework](https://github.com/Snailclimb/guide-rpc-framework) 是一款基于 Netty+Kyro+Zookeeper 实现的 RPC 框架。代码注释详细，结构清晰，并且集成了 Check Style 规范代码结构，非常适合阅读和学习。
 
 由于 Guide哥自身精力和能力有限，如果大家觉得有需要改进和完善的地方的话，欢迎 fork 本项目，然后 clone 到本地，在本地修改后提交 PR 给我，我会在第一时间 Review 你的代码。
 
@@ -77,13 +77,13 @@
 - [x] **集成 Spring 通过注解注册服务**
 - [x] **集成 Spring 通过注解进行服务消费** 。参考： [PR#10](https://github.com/Snailclimb/guide-rpc-framework/pull/10)
 - [x] **增加服务版本号** ：建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级。为什么要增加服务版本号？为后续不兼容升级提供可能，比如服务接口增加方法，或服务模型增加字段，可向后兼容，删除方法或删除字段，将不兼容，枚举类型新增字段也不兼容，需通过变更版本号升级。
-- [x] **对 SPI 机制的运用** 
+- [x] **对 SPI 机制的运用**
 - [ ] **增加可配置比如序列化方式、注册中心的实现方式,避免硬编码** ：通过 API 配置，后续集成 Spring 的话建议使用配置文件的方式进行配置
 - [x] **客户端与服务端通信协议（数据包结构）重新设计** ，可以将原有的 `RpcRequest`和 `RpcReuqest` 对象作为消息体，然后增加如下字段（可以参考：《Netty 入门实战小册》和 Dubbo 框架对这块的设计）：
-  - **魔数** ： 通常是 4 个字节。这个魔数主要是为了筛选来到服务端的数据包，有了这个魔数之后，服务端首先取出前面四个字节进行比对，能够在第一时间识别出这个数据包并非是遵循自定义协议的，也就是无效数据包，为了安全考虑可以直接关闭连接以节省资源。
-  - **序列化器编号** ：标识序列化的方式，比如是使用 Java 自带的序列化，还是 json，kyro 等序列化方式。
-  - **消息体长度** ： 运行时计算出来。
-  - ......
+    - **魔数** ： 通常是 4 个字节。这个魔数主要是为了筛选来到服务端的数据包，有了这个魔数之后，服务端首先取出前面四个字节进行比对，能够在第一时间识别出这个数据包并非是遵循自定义协议的，也就是无效数据包，为了安全考虑可以直接关闭连接以节省资源。
+    - **序列化器编号** ：标识序列化的方式，比如是使用 Java 自带的序列化，还是 json，kyro 等序列化方式。
+    - **消息体长度** ： 运行时计算出来。
+    - ......
 - [ ] **编写测试为重构代码提供信心**
 - [ ] **服务监控中心（类似dubbo admin）**
 - [x] **设置 gzip 压缩**
@@ -161,7 +161,7 @@ public class HelloServiceImpl implements HelloService {
         return result;
     }
 }
-	
+
 @Slf4j
 public class HelloServiceImpl2 implements HelloService {
 
@@ -227,12 +227,12 @@ public class HelloController {
 
 ```java
 ClientTransport rpcRequestTransport = new SocketRpcClient();
-RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
+        RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
         .group("test2").version("version2").build();
-RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcRequestTransport, rpcServiceProperties);
-HelloService helloService = rpcClientProxy.getProxy(HelloService.class);
-String hello = helloService.hello(new Hello("111", "222"));
-System.out.println(hello);
+        RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcRequestTransport, rpcServiceProperties);
+        HelloService helloService = rpcClientProxy.getProxy(HelloService.class);
+        String hello = helloService.hello(new Hello("111", "222"));
+        System.out.println(hello);
 ```
 
 ## 相关问题
